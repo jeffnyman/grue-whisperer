@@ -2,7 +2,7 @@ import "./App.css";
 
 function App() {
   return (
-    <>
+    <div className="app">
       <header>
         <h1>Grue Whisperer</h1>
       </header>
@@ -10,7 +10,7 @@ function App() {
       <main>
         <p>Play LLM-Powered Text Adventures</p>
       </main>
-    </>
+    </div>
   );
 }
 

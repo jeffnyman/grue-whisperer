@@ -1,3 +1,19 @@
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.app::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("/gw-icon.png") center / contain no-repeat;
+  opacity: 0.15;
+  z-index: -1;
+}
+
 header {
   display: flex;
   align-items: center;
