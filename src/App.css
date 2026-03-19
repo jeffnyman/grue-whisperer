@@ -1,3 +1,22 @@
+:root {
+  --color-bg: oklch(21.78% 0 0);
+  --color-bg-option: oklch(33.68% 0 0);
+  --color-bg-option-hover: oklch(32.24% 0.04 166.73);
+  --color-text: oklch(90.67% 0 0);
+  --color-text-muted: oklch(71.4% 0.007 17.32);
+  --color-accent: oklch(80.03% 0.182 151.71);
+  --color-icon: oklch(46.05% 0.029 83.29);
+  --color-border: oklch(32.11% 0 0);
+
+  --spacing-xs: 0.25rem;
+  --spacing-md: 0.75rem;
+  --spacing-xl: 1.25rem;
+
+  --radius-md: 0.5rem;
+
+  --transition-fast: 0.2s ease;
+}
+
 .app {
   flex: 1;
   display: flex;
@@ -19,6 +38,20 @@ header {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  h1 {
+    background: linear-gradient(
+      90deg,
+      var(--color-text),
+      var(--color-bg),
+      var(--color-text)
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: heading-shimmer 8s linear infinite;
+  }
 }
 
 main {
@@ -28,4 +61,77 @@ main {
   overflow: hidden;
   align-items: center;
   justify-content: center;
+}
+
+.game-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+
+  h2 {
+    margin-bottom: 1.875rem;
+    font-size: 1.5rem;
+    background: linear-gradient(
+      90deg,
+      var(--color-icon),
+      var(--color-text),
+      var(--color-icon)
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: heading-shimmer 6s linear infinite;
+  }
+}
+
+@keyframes heading-shimmer {
+  from {
+    background-position: 0% center;
+  }
+  to {
+    background-position: 200% center;
+  }
+}
+
+.game-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 25rem;
+}
+
+.game-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px var(--spacing-xl);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-option);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+  font-family: inherit;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-accent);
+    background: var(--color-bg-option-hover);
+  }
+}
+
+.game-title {
+  color: var(--color-text);
+  font-size: 1.1rem;
+}
+
+.game-subtitle {
+  margin-top: var(--spacing-xs);
+  color: var(--color-text-muted);
+  font-size: 0.975rem;
 }
