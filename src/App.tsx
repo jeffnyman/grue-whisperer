@@ -1,4 +1,5 @@
 import {
+  clearLastGamePlayed,
   games,
   getGameById,
   getLastGamePlayed,
@@ -82,6 +83,7 @@ function App() {
   }, []);
 
   const handleChangeGame = useCallback(() => {
+    clearLastGamePlayed();
     setGameSelected(null);
     window.history.pushState({}, "", "/");
   }, []);

@@ -34,6 +34,10 @@ export function setLastGamePlayed(gameId: string): void {
   localStorage.setItem(STORAGE_KEYS.lastGamePlayed, gameId);
 }
 
+export function clearLastGamePlayed(): void {
+  localStorage.removeItem(STORAGE_KEYS.lastGamePlayed);
+}
+
 export function getGameById(id: string): GameInfo | undefined {
   return games.find((g) => g.id === id);
 }
