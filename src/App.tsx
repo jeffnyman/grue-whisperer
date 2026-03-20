@@ -1,14 +1,25 @@
-import { games } from "./lib/games";
+import { games, setLastGamePlayed, type GameInfo } from "./lib/games";
 import "./App.css";
+import { useCallback } from "react";
 
-function GameSelector() {
+function GameSelector({
+  onSelectGame,
+}: {
+  onSelectGame: (game: GameInfo) => void;
+}) {
   return (
     <div className="game-selector">
       <h2>Pick Your Darkness</h2>
 
       <div className="game-list">
         {games.map((game) => (
-          <button key={game.id} className="game-option">
+          <button
+            key={game.id}
+            className="game-option"
+            onClick={() => {
+              onSelectGame(game);
+            }}
+          >
             <span className="game-title">{game.title}</span>
             {game.subtitle && (
               <span className="game-subtitle">{game.subtitle}</span>
@@ -21,6 +32,11 @@ function GameSelector() {
 }
 
 function App() {
+  const handleSelectGame = useCallback((game: GameInfo) => {
+    setLastGamePlayed(game.id);
+    window.history.pushState({}, "", `/${game.id}`);
+  }, []);
+
   return (
     <div className="app">
       <header>
@@ -28,7 +44,7 @@ function App() {
       </header>
 
       <main>
-        <GameSelector />
+        <GameSelector onSelectGame={handleSelectGame} />
       </main>
     </div>
   );

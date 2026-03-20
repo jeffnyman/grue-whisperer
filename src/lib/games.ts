@@ -1,3 +1,7 @@
+const STORAGE_KEYS = {
+  lastGamePlayed: "grue-whisperer:last-game-played",
+} as const;
+
 export interface GameInfo {
   id: string;
   title: string;
@@ -21,3 +25,7 @@ export const games: GameInfo[] = [
     subtitle: "The Dungeon Master",
   },
 ];
+
+export function setLastGamePlayed(gameId: string): void {
+  localStorage.setItem(STORAGE_KEYS.lastGamePlayed, gameId);
+}
