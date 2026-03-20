@@ -1,6 +1,6 @@
 import { games, setLastGamePlayed, type GameInfo } from "./lib/games";
 import "./App.css";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 function GameSelector({
   onSelectGame,
@@ -32,15 +32,33 @@ function GameSelector({
 }
 
 function App() {
+  const [gameSelected, setGameSelected] = useState(false);
+
   const handleSelectGame = useCallback((game: GameInfo) => {
     setLastGamePlayed(game.id);
+    setGameSelected(true);
     window.history.pushState({}, "", `/${game.id}`);
+  }, []);
+
+  const handleChangeGame = useCallback(() => {
+    setGameSelected(false);
+    window.history.pushState({}, "", "/");
   }, []);
 
   return (
     <div className="app">
       <header>
-        <h1>Grue Whisperer</h1>
+        <h1 className={gameSelected ? undefined : "shimmer"}>
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              handleChangeGame();
+            }}
+          >
+            Grue Whisperer
+          </a>
+        </h1>
       </header>
 
       <main>

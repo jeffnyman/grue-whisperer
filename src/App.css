@@ -39,7 +39,12 @@ header {
   justify-content: center;
   flex-shrink: 0;
 
-  h1 {
+  h1 a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  h1.shimmer a {
     background: linear-gradient(
       90deg,
       var(--color-text),
