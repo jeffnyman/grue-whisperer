@@ -6,7 +6,7 @@ import {
   type GameInfo,
 } from "./lib/games";
 import "./App.css";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function GameSelector({
   onSelectGame,
@@ -59,6 +59,14 @@ function App() {
     }
 
     return null;
+  });
+
+  // On initial load, sync the URL with the game that was
+  // previously selected.
+  useEffect(() => {
+    if (gameSelected && window.location.pathname !== `/${gameSelected.id}`) {
+      window.history.replaceState({}, "", `/${gameSelected.id}`);
+    }
   });
 
   const handleSelectGame = useCallback((game: GameInfo) => {
