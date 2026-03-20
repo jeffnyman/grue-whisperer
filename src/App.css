@@ -35,11 +35,16 @@
 
 header {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
   padding: var(--spacing-md) var(--spacing-xl);
   flex-shrink: 0;
+
+  &.game-active {
+    flex-direction: row;
+  }
 
   h1 a {
     color: var(--color-text);
@@ -60,7 +65,7 @@ header {
     animation: heading-shimmer 8s linear infinite;
   }
 
-  p::before {
+  &.game-active p::before {
     content: "—";
     margin-right: var(--spacing-md);
   }

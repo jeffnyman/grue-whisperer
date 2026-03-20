@@ -74,7 +74,7 @@ function App() {
 
   return (
     <div className="app">
-      <header>
+      <header className={gameSelected ? "game-active" : undefined}>
         <h1 className={gameSelected ? undefined : "shimmer"}>
           <a
             href="/"
