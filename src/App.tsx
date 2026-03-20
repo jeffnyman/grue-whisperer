@@ -40,7 +40,9 @@ function GameSelector({
 function App() {
   // Initialize from the URL path first, then fall back to the last
   // played game. If someone navigates directly to "/zork1", that
-  // intent should win over whatever was last played.
+  // intent should win over whatever was last played. If there is
+  // ever only one game in the list, that game would be selected
+  // automatically.
   const [gameSelected, setGameSelected] = useState<GameInfo | null>(() => {
     const pathGameId = window.location.pathname.slice(1);
 
@@ -56,6 +58,10 @@ function App() {
 
     if (lastGameId) {
       return getGameById(lastGameId) ?? null;
+    }
+
+    if (games.length === 1) {
+      return games[0];
     }
 
     return null;
