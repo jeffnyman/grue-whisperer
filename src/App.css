@@ -37,6 +37,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-xl);
   flex-shrink: 0;
 
   h1 a {
@@ -56,6 +58,11 @@ header {
     -webkit-background-clip: text;
     color: transparent;
     animation: heading-shimmer 8s linear infinite;
+  }
+
+  p::before {
+    content: "—";
+    margin-right: var(--spacing-md);
   }
 }
 

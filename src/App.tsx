@@ -1,4 +1,10 @@
-import { games, setLastGamePlayed, type GameInfo } from "./lib/games";
+import {
+  games,
+  getGameById,
+  getLastGamePlayed,
+  setLastGamePlayed,
+  type GameInfo,
+} from "./lib/games";
 import "./App.css";
 import { useCallback, useState } from "react";
 
@@ -32,16 +38,37 @@ function GameSelector({
 }
 
 function App() {
-  const [gameSelected, setGameSelected] = useState(false);
+  // Initialize from the URL path first, then fall back to the last
+  // played game. If someone navigates directly to "/zork1", that
+  // intent should win over whatever was last played.
+  const [gameSelected, setGameSelected] = useState<GameInfo | null>(() => {
+    const pathGameId = window.location.pathname.slice(1);
+
+    if (pathGameId) {
+      const pathGame = getGameById(pathGameId);
+
+      if (pathGame) {
+        return pathGame;
+      }
+    }
+
+    const lastGameId = getLastGamePlayed();
+
+    if (lastGameId) {
+      return getGameById(lastGameId) ?? null;
+    }
+
+    return null;
+  });
 
   const handleSelectGame = useCallback((game: GameInfo) => {
     setLastGamePlayed(game.id);
-    setGameSelected(true);
+    setGameSelected(game);
     window.history.pushState({}, "", `/${game.id}`);
   }, []);
 
   const handleChangeGame = useCallback(() => {
-    setGameSelected(false);
+    setGameSelected(null);
     window.history.pushState({}, "", "/");
   }, []);
 
@@ -59,6 +86,11 @@ function App() {
             Grue Whisperer
           </a>
         </h1>
+        <p>
+          {gameSelected
+            ? gameSelected.title
+            : "You are likely to be eaten by a grue."}
+        </p>
       </header>
 
       <main>
