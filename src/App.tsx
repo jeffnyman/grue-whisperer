@@ -39,12 +39,26 @@ function GameSelector({
   );
 }
 
-function GameLoader() {
-  useEffect(() => {
-    if (isGameInitialized()) {
-      return;
-    }
-  });
+interface GameLoaderProps {
+  game: GameInfo;
+}
+
+function GameLoader({ game }: GameLoaderProps) {
+  const [loading, setLoading] = useState(true);
+
+  if (isGameInitialized()) {
+    setLoading(false);
+    return;
+  }
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <h1>Loading {game.title}</h1>
+        <p>The darkness is loading...</p>
+      </div>
+    );
+  }
 
   return <p>Game Goes Here</p>;
 }
@@ -122,7 +136,7 @@ function App() {
 
       <main>
         {gameSelected ? (
-          <GameLoader />
+          <GameLoader game={gameSelected} />
         ) : (
           <GameSelector onSelectGame={handleSelectGame} />
         )}
