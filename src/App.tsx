@@ -94,7 +94,6 @@ function GameLoader({ game, onChangeGame }: GameLoaderProps) {
 
   return (
     <div className="game">
-      <p>Game Goes Here</p>
       <p>{gameOutput}</p>
     </div>
   );

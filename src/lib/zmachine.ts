@@ -4,15 +4,34 @@ let currentRunner: ZMachine | null = null;
 
 interface InputRequest {
   type: "INPUT_NEEDED";
+  maxlen: number;
 }
 
 export class ZMachine {
   private game: Voxam;
   private gameGenerator: Generator | null = null;
   private outputBuffer = "";
+  private waitingForInput = false;
 
   constructor(storyData: ArrayBuffer) {
     this.game = new Voxam(new Uint8Array(storyData));
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+
+    // eslint-disable-next-line require-yield
+    this.game.print = function* (text: string) {
+      self.outputBuffer += text;
+    };
+
+    this.game.read = function* (
+      maxlen: number,
+    ): Generator<InputRequest, string, string> {
+      self.waitingForInput = true;
+      const input = yield { type: "INPUT_NEEDED", maxlen };
+      self.waitingForInput = false;
+      return input;
+    };
   }
 
   start(): string {
@@ -48,7 +67,13 @@ export class ZMachine {
       result = this.gameGenerator.next();
     }
 
+    this.waitingForInput = false;
+
     return this.outputBuffer;
+  }
+
+  isWaitingForInput(): boolean {
+    return this.waitingForInput;
   }
 }
 
