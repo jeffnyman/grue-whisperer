@@ -41,9 +41,10 @@ function GameSelector({
 
 interface GameLoaderProps {
   game: GameInfo;
+  onChangeGame: () => void;
 }
 
-function GameLoader({ game }: GameLoaderProps) {
+function GameLoader({ game, onChangeGame }: GameLoaderProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [gameOutput, setGameOutput] = useState<string | null>(null);
@@ -79,6 +80,14 @@ function GameLoader({ game }: GameLoaderProps) {
       <div className="error-screen">
         <h1>Error</h1>
         <p>{error}</p>
+        <button
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
+          Retry
+        </button>
+        <button onClick={onChangeGame}>Choose Different Game</button>
       </div>
     );
   }
@@ -165,7 +174,7 @@ function App() {
 
       <main>
         {gameSelected ? (
-          <GameLoader game={gameSelected} />
+          <GameLoader game={gameSelected} onChangeGame={handleChangeGame} />
         ) : (
           <GameSelector onSelectGame={handleSelectGame} />
         )}

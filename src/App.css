@@ -1,5 +1,6 @@
 :root {
   --color-bg: oklch(21.78% 0 0);
+  --color-bg-dark: oklch(21.78% 0 0);
   --color-bg-option: oklch(33.68% 0 0);
   --color-bg-option-hover: oklch(32.24% 0.04 166.73);
   --color-text: oklch(90.67% 0 0);
@@ -7,11 +8,13 @@
   --color-accent: oklch(80.03% 0.182 151.71);
   --color-icon: oklch(46.05% 0.029 83.29);
   --color-border: oklch(32.11% 0 0);
+  --color-error: oklch(63.68% 0.208 25.33);
 
   --spacing-xs: 0.25rem;
   --spacing-md: 0.75rem;
   --spacing-xl: 1.25rem;
 
+  --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
 
   --transition-fast: 0.2s ease;
@@ -159,4 +162,22 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.error-screen {
+  h1 {
+    color: var(--color-error);
+  }
+
+  button {
+    margin-top: var(--spacing-xl);
+    padding: 10px var(--spacing-xl);
+    border: none;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-accent);
+    color: var(--color-bg-dark);
+    cursor: pointer;
+    font-weight: 700;
+    font-family: inherit;
+  }
 }
