@@ -8,7 +8,7 @@ import {
 } from "./lib/games";
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
-import { initializeGame, isGameInitialized } from "./lib/zmachine";
+import { initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
 
 function GameSelector({
   onSelectGame,
@@ -136,6 +136,7 @@ function App() {
   }, []);
 
   const handleChangeGame = useCallback(() => {
+    resetGame();
     clearLastGamePlayed();
     setGameSelected(null);
     window.history.pushState({}, "", "/");

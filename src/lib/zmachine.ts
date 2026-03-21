@@ -71,3 +71,7 @@ export async function initializeGame(storyUrl: string): Promise<string> {
 
   return currentRunner.start();
 }
+
+export function resetGame(): void {
+  currentRunner = null;
+}
