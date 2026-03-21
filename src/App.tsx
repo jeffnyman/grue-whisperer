@@ -8,6 +8,7 @@ import {
 } from "./lib/games";
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
+import { isGameInitialized } from "./lib/zmachine";
 
 function GameSelector({
   onSelectGame,
@@ -36,6 +37,16 @@ function GameSelector({
       </div>
     </div>
   );
+}
+
+function GameLoader() {
+  useEffect(() => {
+    if (isGameInitialized()) {
+      return;
+    }
+  });
+
+  return <p>Game Goes Here</p>;
 }
 
 function App() {
@@ -110,7 +121,11 @@ function App() {
       </header>
 
       <main>
-        <GameSelector onSelectGame={handleSelectGame} />
+        {gameSelected ? (
+          <GameLoader />
+        ) : (
+          <GameSelector onSelectGame={handleSelectGame} />
+        )}
       </main>
     </div>
   );

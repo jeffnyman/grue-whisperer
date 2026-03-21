@@ -798,3 +798,5 @@ Voxam.version = Voxam_Version;
 try {
   if (module && module.exports) module.exports = Voxam;
 } catch (e) {}
+
+export default Voxam;
