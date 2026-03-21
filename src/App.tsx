@@ -8,7 +8,7 @@ import {
 } from "./lib/games";
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
-import { isGameInitialized } from "./lib/zmachine";
+import { initializeGame, isGameInitialized } from "./lib/zmachine";
 
 function GameSelector({
   onSelectGame,
@@ -45,12 +45,24 @@ interface GameLoaderProps {
 
 function GameLoader({ game }: GameLoaderProps) {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [gameOutput, setGameOutput] = useState<string | null>(null);
 
   useEffect(() => {
     if (isGameInitialized()) {
       setLoading(false);
       return;
     }
+
+    initializeGame(game.file)
+      .then((output) => {
+        setGameOutput(output);
+        setLoading(false);
+      })
+      .catch((err: unknown) => {
+        setError(err instanceof Error ? err.message : "Failed to load game");
+        setLoading(false);
+      });
   }, [game.file]);
 
   if (loading) {
@@ -62,7 +74,21 @@ function GameLoader({ game }: GameLoaderProps) {
     );
   }
 
-  return <p>Game Goes Here</p>;
+  if (error) {
+    return (
+      <div className="error-screen">
+        <h1>Error</h1>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="game">
+      <p>Game Goes Here</p>
+      <p>{gameOutput}</p>
+    </div>
+  );
 }
 
 function App() {

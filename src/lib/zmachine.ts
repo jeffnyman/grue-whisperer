@@ -59,7 +59,10 @@ export function isGameInitialized(): boolean {
 export async function initializeGame(storyUrl: string): Promise<string> {
   const response = await fetch(storyUrl);
 
-  if (!response.ok) {
+  if (
+    !response.ok ||
+    response.headers.get("content-type")?.includes("text/html")
+  ) {
     throw new Error(`Failed to load game: ${storyUrl}`);
   }
 
