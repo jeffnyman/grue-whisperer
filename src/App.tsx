@@ -46,10 +46,12 @@ interface GameLoaderProps {
 function GameLoader({ game }: GameLoaderProps) {
   const [loading, setLoading] = useState(true);
 
-  if (isGameInitialized()) {
-    setLoading(false);
-    return;
-  }
+  useEffect(() => {
+    if (isGameInitialized()) {
+      setLoading(false);
+      return;
+    }
+  }, [game.file]);
 
   if (loading) {
     return (

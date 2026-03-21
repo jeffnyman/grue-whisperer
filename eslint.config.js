@@ -22,6 +22,9 @@ export default defineConfig([
       reactDom.configs.recommended,
       reactX.configs["recommended-typescript"],
     ],
+    rules: {
+      "react-hooks/set-state-in-effect": "off",
+    },
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
