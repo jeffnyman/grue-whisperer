@@ -10,6 +10,24 @@ import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
 
+interface GameDisplayProps {
+  gameIntro: string | null;
+}
+
+function GameDisplay({ gameIntro }: GameDisplayProps) {
+  return (
+    <div className="game-display">
+      <div className="messages">
+        {gameIntro && (
+          <div className="message game-intro-message">
+            <pre>{gameIntro}</pre>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function GameSelector({
   onSelectGame,
 }: {
@@ -92,11 +110,7 @@ function GameLoader({ game, onChangeGame }: GameLoaderProps) {
     );
   }
 
-  return (
-    <div className="game">
-      <p>{gameOutput}</p>
-    </div>
-  );
+  return <GameDisplay gameIntro={gameOutput} />;
 }
 
 function App() {
