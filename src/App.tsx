@@ -9,7 +9,7 @@ import {
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
-import { TamboProvider, useTamboThreadInput } from "@tambo-ai/react";
+import { TamboProvider, useTambo, useTamboThreadInput } from "@tambo-ai/react";
 
 interface GameDisplayProps {
   gameIntro: string | null;
@@ -151,6 +151,8 @@ function GameLoader({ game, onChangeGame }: GameLoaderProps) {
 }
 
 function App() {
+  const { startNewThread } = useTambo();
+
   // Initialize from the URL path first, then fall back to the last
   // played game. If someone navigates directly to "/zork1", that
   // intent should win over whatever was last played. If there is
@@ -198,8 +200,9 @@ function App() {
     resetGame();
     clearLastGamePlayed();
     setGameSelected(null);
+    startNewThread();
     window.history.pushState({}, "", "/");
-  }, []);
+  }, [startNewThread]);
 
   return (
     <div className="app">
