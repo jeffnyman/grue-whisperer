@@ -15,7 +15,17 @@ import {
   useTamboThreadInput,
   type TamboThreadMessage,
 } from "@tambo-ai/react";
+import type { InitialInputMessage } from "@tambo-ai/react";
 import { tools } from "./lib/tambo";
+
+const systemPrompt = `You are the narrator of a text adventure game.`;
+
+const initialMessages: InitialInputMessage[] = [
+  {
+    role: "system",
+    content: [{ type: "text", text: systemPrompt }],
+  },
+];
 
 // Extracts the command string from a sendGameCommand tool_use
 // block, if present. sendGameCommand is the Tambo tool defined
@@ -348,7 +358,12 @@ function AppWithProviders() {
   }
 
   return (
-    <TamboProvider apiKey={apiKey} userKey={contextKey} tools={tools}>
+    <TamboProvider
+      apiKey={apiKey}
+      userKey={contextKey}
+      tools={tools}
+      initialMessages={initialMessages}
+    >
       <App />
     </TamboProvider>
   );
