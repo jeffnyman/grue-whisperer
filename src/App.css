@@ -1,7 +1,9 @@
 :root {
   --color-bg: oklch(21.78% 0 0);
   --color-bg-dark: oklch(21.78% 0 0);
+  --color-bg-card: oklch(26.45% 0 0);
   --color-bg-intro: oklch(25.22% 0.018 165.41);
+  --color-bg-user: oklch(32.24% 0.04 166.73);
   --color-bg-option: oklch(33.68% 0 0);
   --color-bg-option-hover: oklch(32.24% 0.04 166.73);
   --color-bg-command: oklch(22.84% 0.038 282.93);
@@ -16,6 +18,7 @@
   --color-border: oklch(32.11% 0 0);
   --color-border-intro: oklch(38.24% 0.04 168.31);
   --color-border-command: oklch(31.14% 0.052 282.99);
+  --color-border-user: oklch(42.93% 0.06 164.43);
   --color-error: oklch(63.68% 0.208 25.33);
 
   --spacing-xs: 0.25rem;
@@ -206,6 +209,15 @@ main {
   border-color: var(--color-border-command);
   background-color: var(--color-bg-command);
   color: var(--color-command);
+}
+
+.message.user {
+  background: var(--color-bg-user);
+  border-color: var(--color-border-user);
+}
+
+.message.assistant {
+  background: var(--color-bg-card);
 }
 
 .message-content {

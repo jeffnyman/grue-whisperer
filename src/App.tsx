@@ -9,7 +9,62 @@ import {
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
-import { TamboProvider, useTambo, useTamboThreadInput } from "@tambo-ai/react";
+import {
+  TamboProvider,
+  useTambo,
+  useTamboThreadInput,
+  type TamboThreadMessage,
+} from "@tambo-ai/react";
+
+// Extracts the command string from a sendGameCommand tool_use
+// block, if present. sendGameCommand is the Tambo tool defined
+// in zmachine.ts that is called to send player input to the
+// Z-Machine.
+function getGameCommandFromMessage(message: TamboThreadMessage): string | null {
+  for (const block of message.content) {
+    if (
+      block.type === "tool_use" &&
+      block.name === "sendGameCommand" &&
+      typeof block.input === "object" &&
+      "command" in block.input
+    ) {
+      return String(block.input.command);
+    }
+  }
+
+  return null;
+}
+
+// Finds the game command that is associated with a given assistant
+// message. Checks the message itself first, then walks backwards
+// through prior assistant messages until it hits a user turn, to
+// handle cases where the tool call and the visible response land
+// n separate messages.
+function resolveCommandForMessage(
+  allMessages: TamboThreadMessage[],
+  messageId: string,
+): string | null {
+  const idx = allMessages.findIndex((m) => m.id === messageId);
+
+  if (idx < 0) return null;
+
+  const direct = getGameCommandFromMessage(allMessages[idx]);
+
+  if (direct) return direct;
+
+  for (let i = idx - 1; i >= 0; i--) {
+    const m = allMessages[i];
+
+    if (m.role === "user" && m.content.some((b) => b.type === "text")) break;
+    if (m.role !== "assistant") continue;
+
+    const cmd = getGameCommandFromMessage(m);
+
+    if (cmd) return cmd;
+  }
+
+  return null;
+}
 
 interface GameDisplayProps {
   gameIntro: string | null;
@@ -45,7 +100,10 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
               ),
           )
           .map((message) => {
-            const command = message.role === "assistant" ? true : null;
+            const command =
+              message.role === "assistant"
+                ? resolveCommandForMessage(messages, message.id)
+                : null;
 
             return (
               <div key={message.id}>
