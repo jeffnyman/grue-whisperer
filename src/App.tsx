@@ -223,6 +223,18 @@ function App() {
 function AppWithProviders() {
   const apiKey = import.meta.env.VITE_TAMBO_API_KEY;
 
+  const [contextKey] = useState(() => {
+    const storageKey = "grue-whisperer-user-id";
+    let userID = localStorage.getItem(storageKey);
+
+    if (!userID) {
+      userID = crypto.randomUUID();
+      localStorage.setItem(storageKey, userID);
+    }
+
+    return userID;
+  });
+
   if (!apiKey) {
     return (
       <div className="error-screen">
@@ -238,7 +250,7 @@ function AppWithProviders() {
   }
 
   return (
-    <TamboProvider apiKey={apiKey}>
+    <TamboProvider apiKey={apiKey} userKey={contextKey}>
       <App />
     </TamboProvider>
   );
