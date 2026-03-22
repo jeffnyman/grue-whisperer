@@ -223,6 +223,20 @@ function App() {
 function AppWithProviders() {
   const apiKey = import.meta.env.VITE_TAMBO_API_KEY;
 
+  if (!apiKey) {
+    return (
+      <div className="error-screen">
+        <h1>Missing Tambo API Key</h1>
+        <p>
+          Please set VITE_TAMBO_API_KEY in your <em>.env</em> file
+        </p>
+        <p>
+          Copy <em>.env.example</em> to <em>.env</em> and add your Tambo API key
+        </p>
+      </div>
+    );
+  }
+
   return (
     <TamboProvider apiKey={apiKey}>
       <App />
