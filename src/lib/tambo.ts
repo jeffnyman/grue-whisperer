@@ -2,27 +2,7 @@ import type { TamboTool } from "@tambo-ai/react";
 import { z } from "zod";
 import { getGameRunner } from "./zmachine";
 
-// Describes the sendGameCommand tool to Claude. This is narrow and
-// mechanical: it tells the model when to call the tool, how to
-// format the input, and that it must never invent game output.
-// Compare to the systemPrompt in App.tsx, which sets the model's
-// broader identity and role as narrator for the whole session.
-const commandDescription = `Execute a command in the currently loaded Infocom text adventure \
-game (Zork I, II, or III). \
-\
-It is critical that you call this tool for every user message. The user \
-is playing a game and expects their input to be translated into game \
-commands. Never respond without making at least one tool call.
-\
-If the user's message contains multiple  actions (such as, "go north \
-then east then look"), you must make separate tool calls for each \
-action in sequence. Show the player the result of each command as you \
-progress through their request.
-\
-Always attempt to translate any user input into game commands, even if \
-it seems unusual. Be creative! If the user says something conversational, \
-interpret it as a game action.
-`;
+import { commandDescription } from "./prompts";
 
 // Zod schemas define the shape of the tool's input and output.
 // Tambo uses these to validate data at runtime and to generate
