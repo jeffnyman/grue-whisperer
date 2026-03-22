@@ -9,6 +9,7 @@
   --color-text-muted: oklch(71.4% 0.007 17.32);
   --color-text-secondary: oklch(71.37% 0.019 261.32);
   --color-accent: oklch(80.03% 0.182 151.71);
+  --color-accent-hover: oklch(72.27% 0.192 149.58);
   --color-icon: oklch(46.05% 0.029 83.29);
   --color-border: oklch(32.11% 0 0);
   --color-border-intro: oklch(38.24% 0.04 168.31);
@@ -237,6 +238,19 @@ main {
     font-size: 1rem;
     font-weight: bold;
     transition: background-color var(--transition-fast);
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-accent-hover);
+    }
+
+    &.loading {
+      animation: pulse 1.2s ease-in-out infinite;
+    }
   }
 }
 
@@ -263,5 +277,17 @@ main {
     cursor: pointer;
     font-weight: 700;
     font-family: inherit;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
   }
 }

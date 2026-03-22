@@ -9,15 +9,21 @@ import {
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
-import { TamboProvider } from "@tambo-ai/react";
+import { TamboProvider, useTamboThreadInput } from "@tambo-ai/react";
 
 interface GameDisplayProps {
   gameIntro: string | null;
 }
 
 function GameDisplay({ gameIntro }: GameDisplayProps) {
+  const { isPending, setValue, submit, value } = useTamboThreadInput();
+
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!value.trim() || isPending) return;
+
+    void submit();
   };
 
   return (
@@ -34,10 +40,17 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
         <input
           type="text"
           placeholder="What do you want to do?"
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
+          disabled={isPending}
           autoFocus
         ></input>
         <button
           type="submit"
+          className={isPending ? "loading" : ""}
+          disabled={isPending || !value.trim()}
           onMouseDown={(e) => {
             e.preventDefault();
           }}
@@ -45,7 +58,7 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
             e.preventDefault();
           }}
         >
-          &gt;
+          {isPending ? ">" : ">"}
         </button>
       </form>
     </div>
