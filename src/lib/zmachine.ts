@@ -42,6 +42,23 @@ export class ZMachine {
     return intro;
   }
 
+  sendCommand(command: string): string {
+    if (!this.gameGenerator) {
+      throw new Error("Game not started");
+    }
+
+    if (!this.waitingForInput) {
+      throw new Error("Game is not waiting for input");
+    }
+
+    this.outputBuffer = "";
+
+    const result = this.gameGenerator.next(command);
+    const output = this.collectOutputFrom(result);
+
+    return output;
+  }
+
   runUntilInput(): string {
     if (!this.gameGenerator) {
       throw new Error("Game not started");
@@ -99,4 +116,8 @@ export async function initializeGame(storyUrl: string): Promise<string> {
 
 export function resetGame(): void {
   currentRunner = null;
+}
+
+export function getGameRunner(): ZMachine | null {
+  return currentRunner;
 }

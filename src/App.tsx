@@ -15,6 +15,7 @@ import {
   useTamboThreadInput,
   type TamboThreadMessage,
 } from "@tambo-ai/react";
+import { tools } from "./lib/tambo";
 
 // Extracts the command string from a sendGameCommand tool_use
 // block, if present. sendGameCommand is the Tambo tool defined
@@ -347,7 +348,7 @@ function AppWithProviders() {
   }
 
   return (
-    <TamboProvider apiKey={apiKey} userKey={contextKey}>
+    <TamboProvider apiKey={apiKey} userKey={contextKey} tools={tools}>
       <App />
     </TamboProvider>
   );
