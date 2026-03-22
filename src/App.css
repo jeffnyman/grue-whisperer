@@ -5,6 +5,7 @@
   --color-bg-option: oklch(33.68% 0 0);
   --color-bg-option-hover: oklch(32.24% 0.04 166.73);
   --color-text: oklch(90.67% 0 0);
+  --color-text-dim: oklch(51.03% 0 0);
   --color-text-muted: oklch(71.4% 0.007 17.32);
   --color-text-secondary: oklch(71.37% 0.019 261.32);
   --color-accent: oklch(80.03% 0.182 151.71);
@@ -195,6 +196,48 @@ main {
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   max-width: 47.5rem;
+}
+
+.player-prompt {
+  display: flex;
+  gap: 0.625rem;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  max-width: 50rem;
+  width: 100%;
+
+  input {
+    flex: 1;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-card);
+    color: var(--color-text);
+    transition: border-color var(--transition-fast);
+    font-size: 1rem;
+    font-family: inherit;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+
+    &::placeholder {
+      color: var(--color-text-dim);
+    }
+  }
+
+  button {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: var(--color-bg-dark);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color var(--transition-fast);
+  }
 }
 
 .loading-screen,

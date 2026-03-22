@@ -24,6 +24,15 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
           </div>
         )}
       </div>
+
+      <form className="player-prompt">
+        <input
+          type="text"
+          placeholder="What do you want to do?"
+          autoFocus
+        ></input>
+        <button type="submit">&gt;</button>
+      </form>
     </div>
   );
 }
