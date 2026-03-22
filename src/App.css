@@ -4,15 +4,18 @@
   --color-bg-intro: oklch(25.22% 0.018 165.41);
   --color-bg-option: oklch(33.68% 0 0);
   --color-bg-option-hover: oklch(32.24% 0.04 166.73);
+  --color-bg-command: oklch(22.84% 0.038 282.93);
   --color-text: oklch(90.67% 0 0);
   --color-text-dim: oklch(51.03% 0 0);
   --color-text-muted: oklch(71.4% 0.007 17.32);
   --color-text-secondary: oklch(71.37% 0.019 261.32);
   --color-accent: oklch(80.03% 0.182 151.71);
   --color-accent-hover: oklch(72.27% 0.192 149.58);
+  --color-command: oklch(66.28% 0.097 283.42);
   --color-icon: oklch(46.05% 0.029 83.29);
   --color-border: oklch(32.11% 0 0);
   --color-border-intro: oklch(38.24% 0.04 168.31);
+  --color-border-command: oklch(31.14% 0.052 282.99);
   --color-error: oklch(63.68% 0.208 25.33);
 
   --spacing-xs: 0.25rem;
@@ -197,6 +200,17 @@ main {
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   max-width: 47.5rem;
+}
+
+.message.command {
+  border-color: var(--color-border-command);
+  background-color: var(--color-bg-command);
+  color: var(--color-command);
+}
+
+.message-content {
+  white-space: pre-wrap;
+  line-height: 1.7;
 }
 
 .player-prompt {
