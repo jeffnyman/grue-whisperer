@@ -16,6 +16,7 @@ interface GameDisplayProps {
 }
 
 function GameDisplay({ gameIntro }: GameDisplayProps) {
+  const { messages } = useTambo();
   const { isPending, setValue, submit, value } = useTamboThreadInput();
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -34,6 +35,28 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
             <pre>{gameIntro}</pre>
           </div>
         )}
+
+        {messages
+          .filter(
+            (message) =>
+              (message.role === "user" || message.role === "assistant") &&
+              message.content.some(
+                (block) => block.type === "text" && block.text.trim(),
+              ),
+          )
+          .map((message) => {
+            const command = message.role === "assistant" ? true : null;
+
+            return (
+              <div key={message.id}>
+                {command && (
+                  <div className="message command">
+                    <div className="message-content">{command}</div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
       </div>
 
       <form onSubmit={handleSubmit} className="player-prompt">
