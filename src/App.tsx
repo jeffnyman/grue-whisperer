@@ -15,6 +15,10 @@ interface GameDisplayProps {
 }
 
 function GameDisplay({ gameIntro }: GameDisplayProps) {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="game-display">
       <div className="messages">
@@ -25,13 +29,23 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
         )}
       </div>
 
-      <form className="player-prompt">
+      <form onSubmit={handleSubmit} className="player-prompt">
         <input
           type="text"
           placeholder="What do you want to do?"
           autoFocus
         ></input>
-        <button type="submit">&gt;</button>
+        <button
+          type="submit"
+          onMouseDown={(e) => {
+            e.preventDefault();
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault();
+          }}
+        >
+          &gt;
+        </button>
       </form>
     </div>
   );
