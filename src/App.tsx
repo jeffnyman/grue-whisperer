@@ -9,6 +9,7 @@ import {
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
+import { TamboProvider } from "@tambo-ai/react";
 
 interface GameDisplayProps {
   gameIntro: string | null;
@@ -219,4 +220,14 @@ function App() {
   );
 }
 
-export default App;
+function AppWithProviders() {
+  const apiKey = import.meta.env.VITE_TAMBO_API_KEY;
+
+  return (
+    <TamboProvider apiKey={apiKey}>
+      <App />
+    </TamboProvider>
+  );
+}
+
+export default AppWithProviders;
