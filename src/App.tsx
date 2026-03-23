@@ -226,6 +226,41 @@ function GameSelector({
   );
 }
 
+function ConfirmModal({
+  onConfirm,
+  onCancel,
+}: {
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => { window.removeEventListener("keydown", handleEscape); };
+  }, [onCancel]);
+
+  return (
+    <div className="modal-overlay" onClick={onCancel}>
+      <div className="modal-content" onClick={(e) => { e.stopPropagation(); }}>
+        <p className="modal-message">
+          The grue watches you reach for the reset. Are you sure you want to
+          start over? Your progress will be lost.
+        </p>
+        <div className="modal-actions">
+          <button className="modal-button modal-button-cancel" onClick={onCancel}>
+            Keep Playing
+          </button>
+          <button className="modal-button modal-button-confirm" onClick={onConfirm}>
+            Start Over
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface GameLoaderProps {
   game: GameInfo;
   onChangeGame: () => void;
@@ -286,6 +321,7 @@ function GameLoader({ game, onChangeGame, showCommands }: GameLoaderProps) {
 function App() {
   const { startNewThread } = useTambo();
   const [showCommands, setShowCommands] = useState(false);
+  const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
 
   // Initialize from the URL path first, then fall back to the last
   // played game. If someone navigates directly to "/zork1", that
@@ -339,15 +375,18 @@ function App() {
   }, [startNewThread]);
 
   const handleNewGame = useCallback(() => {
-    if (confirm("Start a new game? Your progress will be lost.")) {
-      resetGame();
-      startNewThread();
+    setShowNewGameConfirm(true);
+  }, []);
 
-      // If multiple games, go back to the selector.
-      if (games.length > 1) {
-        setGameSelected(null);
-        window.history.pushState({}, "", "/");
-      }
+  const handleConfirmNewGame = useCallback(() => {
+    setShowNewGameConfirm(false);
+    resetGame();
+    startNewThread();
+
+    // If multiple games, go back to the selector.
+    if (games.length > 1) {
+      setGameSelected(null);
+      window.history.pushState({}, "", "/");
     }
   }, [startNewThread]);
 
@@ -427,6 +466,13 @@ function App() {
           AI and Testing on TesterStories
         </a>
       </footer>
+
+      {showNewGameConfirm && (
+        <ConfirmModal
+          onConfirm={handleConfirmNewGame}
+          onCancel={() => { setShowNewGameConfirm(false); }}
+        />
+      )}
     </div>
   );
 }
