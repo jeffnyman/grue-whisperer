@@ -78,7 +78,7 @@ export class ZMachine {
       const value = result.value as InputRequest | undefined;
 
       if (value?.type === "INPUT_NEEDED") {
-        return this.outputBuffer;
+        return this.outputBuffer.trimEnd().replace(/>$/, "").trimEnd();
       }
 
       result = this.gameGenerator.next();
@@ -86,7 +86,7 @@ export class ZMachine {
 
     this.waitingForInput = false;
 
-    return this.outputBuffer;
+    return this.outputBuffer.trimEnd().replace(/>$/, "").trimEnd();
   }
 
   isWaitingForInput(): boolean {
