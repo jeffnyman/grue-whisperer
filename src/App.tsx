@@ -8,7 +8,7 @@ import {
 } from "./lib/games";
 import "./App.css";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
+import { clearGameSave, initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
 import {
   TamboProvider,
   useTambo,
@@ -238,21 +238,34 @@ function ConfirmModal({
       if (e.key === "Escape") onCancel();
     };
     window.addEventListener("keydown", handleEscape);
-    return () => { window.removeEventListener("keydown", handleEscape); };
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
   }, [onCancel]);
 
   return (
     <div className="modal-overlay" onClick={onCancel}>
-      <div className="modal-content" onClick={(e) => { e.stopPropagation(); }}>
+      <div
+        className="modal-content"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <p className="modal-message">
           The grue watches you reach for the reset. Are you sure you want to
           start over? Your progress will be lost.
         </p>
         <div className="modal-actions">
-          <button className="modal-button modal-button-cancel" onClick={onCancel}>
+          <button
+            className="modal-button modal-button-cancel"
+            onClick={onCancel}
+          >
             Keep Playing
           </button>
-          <button className="modal-button modal-button-confirm" onClick={onConfirm}>
+          <button
+            className="modal-button modal-button-confirm"
+            onClick={onConfirm}
+          >
             Start Over
           </button>
         </div>
@@ -380,6 +393,7 @@ function App() {
 
   const handleConfirmNewGame = useCallback(() => {
     setShowNewGameConfirm(false);
+    clearGameSave();
     resetGame();
     startNewThread();
 
@@ -470,7 +484,9 @@ function App() {
       {showNewGameConfirm && (
         <ConfirmModal
           onConfirm={handleConfirmNewGame}
-          onCancel={() => { setShowNewGameConfirm(false); }}
+          onCancel={() => {
+            setShowNewGameConfirm(false);
+          }}
         />
       )}
     </div>
