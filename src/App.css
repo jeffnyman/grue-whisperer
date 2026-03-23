@@ -16,12 +16,14 @@
   --color-command: oklch(66.28% 0.097 283.42);
   --color-icon: oklch(46.05% 0.029 83.29);
   --color-border: oklch(32.11% 0 0);
+  --color-border-light: #oklch(38.67% 0 0);
   --color-border-intro: oklch(38.24% 0.04 168.31);
   --color-border-command: oklch(31.14% 0.052 282.99);
   --color-border-user: oklch(42.93% 0.06 164.43);
   --color-error: oklch(63.68% 0.208 25.33);
 
   --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
   --spacing-md: 0.75rem;
   --spacing-lg: 1rem;
   --spacing-xl: 1.25rem;
@@ -59,6 +61,10 @@ header {
 
   &.game-active {
     flex-direction: row;
+    justify-content: flex-start;
+    max-width: 50rem;
+    margin: 0 auto;
+    width: 100%;
   }
 
   h1 a {
@@ -83,6 +89,12 @@ header {
   &.game-active p::before {
     content: "—";
     margin-right: var(--spacing-md);
+  }
+
+  & .header-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-left: auto;
   }
 }
 
@@ -141,6 +153,48 @@ footer {
   }
   to {
     background-position: 200% center;
+  }
+}
+
+.toggle-button,
+.reset-button {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-light);
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.toggle-button {
+  color: var(--color-text-dim);
+  padding: var(--spacing-xs) var(--spacing-sm);
+
+  &:hover {
+    border-color: var(--color-text-dim);
+    color: var(--color-text-muted);
+  }
+
+  &.active {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+}
+
+.toggle-icon {
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.reset-button {
+  color: var(--color-text-muted);
+  padding: var(--spacing-xs) var(--spacing-md);
+
+  &:hover {
+    border-color: var(--color-text-dim);
+    color: var(--color-text);
   }
 }
 

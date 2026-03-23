@@ -14,8 +14,8 @@ import {
   useTambo,
   useTamboThreadInput,
   type TamboThreadMessage,
+  type InitialInputMessage,
 } from "@tambo-ai/react";
-import type { InitialInputMessage } from "@tambo-ai/react";
 import { tools } from "./lib/tambo";
 import { systemPrompt } from "./lib/prompts";
 
@@ -78,9 +78,10 @@ function resolveCommandForMessage(
 
 interface GameDisplayProps {
   gameIntro: string | null;
+  showCommands: boolean;
 }
 
-function GameDisplay({ gameIntro }: GameDisplayProps) {
+function GameDisplay({ gameIntro, showCommands }: GameDisplayProps) {
   const { messages } = useTambo();
   const { isPending, setValue, submit, value } = useTamboThreadInput();
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -139,7 +140,7 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
 
             return (
               <div key={message.id}>
-                {command && (
+                {showCommands && command && (
                   <div className="message command">
                     <div className="message-content">{command}</div>
                   </div>
@@ -228,9 +229,10 @@ function GameSelector({
 interface GameLoaderProps {
   game: GameInfo;
   onChangeGame: () => void;
+  showCommands: boolean;
 }
 
-function GameLoader({ game, onChangeGame }: GameLoaderProps) {
+function GameLoader({ game, onChangeGame, showCommands }: GameLoaderProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [gameOutput, setGameOutput] = useState<string | null>(null);
@@ -278,11 +280,12 @@ function GameLoader({ game, onChangeGame }: GameLoaderProps) {
     );
   }
 
-  return <GameDisplay gameIntro={gameOutput} />;
+  return <GameDisplay gameIntro={gameOutput} showCommands={showCommands} />;
 }
 
 function App() {
   const { startNewThread } = useTambo();
+  const [showCommands, setShowCommands] = useState(false);
 
   // Initialize from the URL path first, then fall back to the last
   // played game. If someone navigates directly to "/zork1", that
@@ -335,6 +338,19 @@ function App() {
     window.history.pushState({}, "", "/");
   }, [startNewThread]);
 
+  const handleNewGame = useCallback(() => {
+    if (confirm("Start a new game? Your progress will be lost.")) {
+      resetGame();
+      startNewThread();
+
+      // If multiple games, go back to the selector.
+      if (games.length > 1) {
+        setGameSelected(null);
+        window.history.pushState({}, "", "/");
+      }
+    }
+  }, [startNewThread]);
+
   return (
     <div className="app">
       <header className={gameSelected ? "game-active" : undefined}>
@@ -354,11 +370,36 @@ function App() {
             ? gameSelected.title
             : "You are likely to be eaten by a grue."}
         </p>
+
+        <div className="header-buttons">
+          {gameSelected && (
+            <>
+              <button
+                className={`toggle-button ${showCommands ? "active" : ""}`}
+                onClick={() => {
+                  setShowCommands(!showCommands);
+                }}
+                title={
+                  showCommands ? "Hide game commands" : "Show game commands"
+                }
+              >
+                <span className="toggle-icon">&gt;_</span>
+              </button>
+              <button className="reset-button" onClick={handleNewGame}>
+                New Game
+              </button>
+            </>
+          )}
+        </div>
       </header>
 
       <main>
         {gameSelected ? (
-          <GameLoader game={gameSelected} onChangeGame={handleChangeGame} />
+          <GameLoader
+            game={gameSelected}
+            onChangeGame={handleChangeGame}
+            showCommands={showCommands}
+          />
         ) : (
           <GameSelector onSelectGame={handleSelectGame} />
         )}
