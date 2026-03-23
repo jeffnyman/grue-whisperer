@@ -95,6 +95,21 @@ main {
   justify-content: center;
 }
 
+footer {
+  padding: var(--spacing-md) var(--spacing-xl);
+  color: var(--color-text-dim);
+  text-align: center;
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .game-selector {
   display: flex;
   flex-direction: column;

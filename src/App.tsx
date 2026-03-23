@@ -363,6 +363,29 @@ function App() {
           <GameSelector onSelectGame={handleSelectGame} />
         )}
       </main>
+
+      <footer>
+        Based on{" "}
+        <a
+          href="https://github.com/jeffnyman/voxam-zmachine"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Voxam Z-Machine
+        </a>{" "}
+        | Built with{" "}
+        <a href="https://tambo.co" target="_blank" rel="noopener noreferrer">
+          Tambo
+        </a>{" "}
+        | Part of{" "}
+        <a
+          href="https://testerstories.com/category/ai/ai-and-testing/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          AI and Testing on TesterStories
+        </a>
+      </footer>
     </div>
   );
 }
