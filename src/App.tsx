@@ -84,6 +84,12 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
   const { messages } = useTambo();
   const { isPending, setValue, submit, value } = useTamboThreadInput();
 
+  // Provide variablea for so-called "slow-thinking," which means
+  // an indicator that shows only before the assistant starts to
+  // respond.
+  const slowThinking =
+    isPending && messages[messages.length - 1]?.role !== "assistant";
+
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -122,9 +128,24 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
                     <div className="message-content">{command}</div>
                   </div>
                 )}
+                <div className={`message ${message.role}`}>
+                  <div className="message-content">
+                    {message.content.map((part, i) =>
+                      "text" in part && part.text ? (
+                        // eslint-disable-next-line react-x/no-array-index-key
+                        <span key={i}>{part.text}</span>
+                      ) : null,
+                    )}
+                  </div>
+                </div>
               </div>
             );
           })}
+        {slowThinking && (
+          <div className="message assistant loading">
+            <div className="message-content">Thinking ...</div>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="player-prompt">

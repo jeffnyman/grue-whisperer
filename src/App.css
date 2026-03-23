@@ -225,6 +225,10 @@ main {
   line-height: 1.7;
 }
 
+.message.loading {
+  opacity: 0.7;
+}
+
 .player-prompt {
   display: flex;
   gap: 0.625rem;
