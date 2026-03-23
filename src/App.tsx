@@ -7,7 +7,7 @@ import {
   type GameInfo,
 } from "./lib/games";
 import "./App.css";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
 import {
   TamboProvider,
@@ -83,6 +83,22 @@ interface GameDisplayProps {
 function GameDisplay({ gameIntro }: GameDisplayProps) {
   const { messages } = useTambo();
   const { isPending, setValue, submit, value } = useTamboThreadInput();
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Scroll contents into view as the messages increase.
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isPending]);
+
+  // Put focus on the input field when action processing
+  // completes.
+  useEffect(() => {
+    if (!isPending) {
+      inputRef.current?.focus();
+    }
+  }, [isPending]);
 
   // Provide variablea for so-called "slow-thinking," which means
   // an indicator that shows only before the assistant starts to
@@ -100,7 +116,7 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
 
   return (
     <div className="game-display">
-      <div className="messages">
+      <div className="messages" ref={messagesRef}>
         {gameIntro && (
           <div className="message game-intro-message">
             <pre>{gameIntro}</pre>
@@ -146,6 +162,8 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
             <div className="message-content">Thinking ...</div>
           </div>
         )}
+
+        <div ref={messagesEndRef} />
       </div>
 
       <form onSubmit={handleSubmit} className="player-prompt">
@@ -156,6 +174,7 @@ function GameDisplay({ gameIntro }: GameDisplayProps) {
           onChange={(e) => {
             setValue(e.target.value);
           }}
+          ref={inputRef}
           disabled={isPending}
           autoFocus
         ></input>

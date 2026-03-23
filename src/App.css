@@ -33,9 +33,9 @@
 }
 
 .app {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  height: 100vh;
   position: relative;
 }
 
@@ -186,7 +186,7 @@ main {
   pre {
     white-space: pre-wrap;
     color: var(--color-text-secondary);
-    font-size: 0.875rem;
+    font-size: 1rem;
     line-height: 1.7;
   }
 }
@@ -195,6 +195,11 @@ main {
   flex: 1;
   overflow-y: auto;
   padding: 0.625rem 0;
+  scrollbar-width: none;
+}
+
+.messages::-webkit-scrollbar {
+  display: none;
 }
 
 .message {
