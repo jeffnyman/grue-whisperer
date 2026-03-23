@@ -8,7 +8,12 @@ import {
 } from "./lib/games";
 import "./App.css";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { clearGameSave, initializeGame, isGameInitialized, resetGame } from "./lib/zmachine";
+import {
+  clearGameSave,
+  initializeGame,
+  isGameInitialized,
+  resetGame,
+} from "./lib/zmachine";
 import {
   TamboProvider,
   useTambo,
@@ -226,6 +231,79 @@ function GameSelector({
   );
 }
 
+function InfoModal({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [onClose]);
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-content"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <button className="modal-close" onClick={onClose} aria-label="Close">
+          &times;
+        </button>
+
+        <h2>How It Works</h2>
+
+        <section>
+          <h3>Z-Machine Interpreter</h3>
+
+          <p>
+            The game runs entirely in your browser using{" "}
+            <a
+              href="https://github.com/jeffnyman/voxam-zmachine"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Voxam
+            </a>
+            , a JavaScript implementation of the Z-Machine virtual machine.
+            Infocom created the Z-Machine in the late 1970s as a portable
+            runtime so the same story file could run unchanged across dozens of
+            incompatible home computers, an early and influential example of
+            write-once, run-anywhere software design. The original game data has
+            never changed; only the interpreter running beneath it is new.
+          </p>
+        </section>
+
+        <section>
+          <h3>Natural Language via Tambo</h3>
+
+          <p>
+            Classic text adventures require exact parser syntax:{" "}
+            <em>PUT LAMP IN CASE</em>, not{" "}
+            <em>leave the lantern with the other treasures</em>. This interface
+            replaces that constraint by layering an LLM between you and the
+            parser. Your input is handled by{" "}
+            <a
+              href="https://tambo.co"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Tambo
+            </a>
+            , which manages conversation history and tool orchestration. The
+            model interprets what you mean, issues the appropriate game
+            commands, and returns the result, so you can play the way you think,
+            not the way the parser demands.
+          </p>
+        </section>
+      </div>
+    </div>
+  );
+}
+
 function ConfirmModal({
   onConfirm,
   onCancel,
@@ -335,6 +413,7 @@ function App() {
   const { startNewThread } = useTambo();
   const [showCommands, setShowCommands] = useState(false);
   const [showNewGameConfirm, setShowNewGameConfirm] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   // Initialize from the URL path first, then fall back to the last
   // played game. If someone navigates directly to "/zork1", that
@@ -443,6 +522,15 @@ function App() {
               </button>
             </>
           )}
+          <button
+            className="info-button"
+            onClick={() => {
+              setShowInfo(true);
+            }}
+            title="How it works"
+          >
+            ?
+          </button>
         </div>
       </header>
 
@@ -486,6 +574,14 @@ function App() {
           onConfirm={handleConfirmNewGame}
           onCancel={() => {
             setShowNewGameConfirm(false);
+          }}
+        />
+      )}
+
+      {showInfo && (
+        <InfoModal
+          onClose={() => {
+            setShowInfo(false);
           }}
         />
       )}
