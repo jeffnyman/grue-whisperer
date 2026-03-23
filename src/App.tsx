@@ -452,6 +452,35 @@ function App() {
     }
   });
 
+  // Sync game state when the user navigates with browser
+  // back/forward.
+  useEffect(() => {
+    const handlePopState = () => {
+      const pathGameId = window.location.pathname.slice(1);
+
+      if (pathGameId) {
+        const game = getGameById(pathGameId);
+
+        if (game) {
+          resetGame();
+          setGameSelected(game);
+          startNewThread();
+          return;
+        }
+      }
+
+      // No valid game in URL, so go to the selector.
+      resetGame();
+      setGameSelected(null);
+      startNewThread();
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [startNewThread]);
+
   const handleSelectGame = useCallback((game: GameInfo) => {
     setLastGamePlayed(game.id);
     setGameSelected(game);
