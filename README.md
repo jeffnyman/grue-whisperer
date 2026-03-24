@@ -8,6 +8,24 @@ This project is part of a [blog series on AI and testing](https://testerstories.
 
 ---
 
+## What It Means
+
+Grue Whisperer is a Tambo demo that lets users play classic Infocom text adventures using natural language. It demonstrates Tambo's tool calling capabilities by translating conversational input into Z-machine parser commands.
+
+The "whisperer" framing comes from the **horse whisperer** tradition: the idea of someone who can communicate with a creature or system that others find opaque, dangerous, or unpredictable, through a kind of intimate, low-key fluency rather than brute force.
+
+The classic example is the 1998 film (and the Robert Redford archetype it popularized), but the underlying concept is older: the idea that you don't command a wild or difficult thing, you speak its language. The term then proliferated culturally: dog whisperer, ghost whisperer, etc.
+
+Applied to **Grue Whisperer**, there are a few layers working simultaneously:
+
+- The **grue** is the iconic Infocom monster: dangerous, lurking in darkness, something you can't see or directly confront. It kills you if you blunder into it.
+- A "whisperer" doesn't blunder. They approach carefully, with understanding.
+- Natural language AI as the medium fits perfectly. You're not typing rigid parser commands anymore, you're conversing with the darkness.
+
+There's also a nice inversion buried in it: in *Zork*, the grue is what you fear. The whisperer implies you've flipped the power dynamic: you're the one who understands the dark, not the one threatened by it.
+
+---
+
 ## How It Works
 
 ### The Z-Machine
