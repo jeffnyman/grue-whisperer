@@ -100,3 +100,7 @@ npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Credits
+
+I'm indebted to the work of [Demo Infocom Chat](https://github.com/tambo-ai/demo-infocom-chat), as part of the Tambo project, which paved the way for some of my own work on this. I've heavily modified some aspects of that original to provide what I consider to be a slightly more extendable code base for further experimentation.
